@@ -1,8 +1,8 @@
-// components/company/PreviewPageContent.tsx
 "use client";
 
 import { PreviewView } from "@/components/company/previewView";
 import { useParams, useRouter } from "next/navigation";
+import { Button } from "../ui/button";
 
 export default function PreviewPageContent() {
   const { companySlug } = useParams<{ companySlug: string }>();
@@ -12,12 +12,23 @@ export default function PreviewPageContent() {
     <main className="space-y-4">
       <div className="flex items-center justify-between mb-2">
         <h1 className="text-2xl font-semibold">Preview</h1>
-        <button
-          className="text-sm underline"
-          onClick={() => router.push(`/${companySlug}/edit`)}
-        >
-          Back to edit
-        </button>
+
+        <div className="flex items-center gap-2">
+          <Button
+            className="text-sm"
+            onClick={() => router.push(`/${companySlug}/edit`)}
+          >
+            Back to edit
+          </Button>
+
+          <Button
+            className="text-sm"
+            variant="default"
+            onClick={() => router.push(`/${companySlug}/publish`)}
+          >
+            Publish
+          </Button>
+        </div>
       </div>
 
       <PreviewView companySlug={companySlug} />

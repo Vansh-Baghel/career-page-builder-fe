@@ -12,7 +12,6 @@ export function PreviewView({ companySlug }: { companySlug: string }) {
     queryKey: [`get-${companySlug}-company-draft`, companySlug],
     queryFn: () => getPreview(companySlug).then((r) => r.data),
   });
-  console.log("🚀 ~ PreviewView ~ company:", company);
 
   if (isLoading) return <p>Loading…</p>;
   const renderSection = (s: CompanySection, idx: number) => (

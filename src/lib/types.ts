@@ -20,13 +20,14 @@ export type CompanySection =
 export type Job = {
   id?: string;
   title: string;
-  work_policy: "remote" | "hybrid" | "onsite";
+  work_policy: WorkPolicy;
   location: string;
   department: string;
-  employment_type: "full-time" | "part-time" | "internship";
-  experience_level: "junior" | "mid" | "senior";
-  job_type: "permanent" | "contract";
+  employment_type: EmploymentType;
+  experience_level: ExperienceLevel;
+  job_type: WorkPolicy;
   salary_range: string;
+  job_slug: string;
   posted_days_ago?: number;
 };
 
@@ -52,3 +53,22 @@ export type Brand = {
   culture_video_url?: string;
   culture_video_public_id?: string;
 };
+
+export type EmploymentType =
+  | "full_time"
+  | "part_time"
+  | "contract"
+  | "internship";
+
+export type ExperienceLevel = "fresher" | "junior" | "mid" | "senior" | "lead";
+
+export type WorkPolicy = "remote" | "hybrid" | "onsite";
+
+export type JobType = "permanent`" | "contract";
+
+export type JobFiltersType = {
+  employment_type?: EmploymentType;
+  experience_level?: ExperienceLevel;
+  work_policy?: WorkPolicy;
+  job_type?: JobType;
+}

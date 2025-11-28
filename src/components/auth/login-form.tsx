@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { login } from "@/lib/apis";
 import { saveTokenToLocalStorage } from "@/lib/utils";
-import { useEditorStore } from "@/store/editor";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -21,7 +20,6 @@ const loginSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
-  const { setCompanyName } = useEditorStore();
   const router = useRouter();
   const {
     register,
@@ -35,7 +33,6 @@ export function LoginForm() {
     mutationFn: login,
     onSuccess: (res) => {
       const { token, company_slug, company_name } = res.data;
-      setCompanyName(company_name);
       saveTokenToLocalStorage(token);
       router.push(`/${company_slug}/edit`);
     },

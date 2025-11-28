@@ -1,5 +1,5 @@
 import axios from "@/lib/axios";
-import { CompanyPublic, CompanySection } from "./types";
+import { CompanyPublic, CompanySection, Job } from "./types";
 
 export const signUp = ({
   name,
@@ -87,4 +87,96 @@ export async function uploadLogoOrBanner(
     url: res.data.url,
     public_id: res.data.public_id,
   };
+}
+
+export async function getSingleJob({
+  companySlug,
+  jobSlug,
+}: {
+  companySlug: string;
+  jobSlug: string;
+}) {
+  return await axios.get(`/${companySlug}/job/${jobSlug}`);
+}
+
+export async function getJobs(slug: string) {
+  return await axios.get(`/${slug}/jobs`);
+}
+
+export async function createJob({
+  title,
+  work_policy,
+  location,
+  department,
+  employment_type,
+  experience_level,
+  job_type,
+  salary_range,
+  slug,
+}: {
+  title: string;
+  work_policy: string;
+  location: string;
+  department: string;
+  employment_type: string;
+  experience_level: string;
+  job_type: string;
+  salary_range: string;
+  slug: string;
+}) {
+  return await axios.post(`/${slug}/job`, {
+    title,
+    work_policy,
+    location,
+    department,
+    employment_type,
+    experience_level,
+    job_type,
+    salary_range,
+  });
+}
+
+export async function deleteJob({
+  companySlug,
+  jobSlug,
+}: {
+  companySlug: string;
+  jobSlug: string;
+}) {
+  return await axios.delete(`/${companySlug}/job/${jobSlug}/delete`);
+}
+
+export async function editJob({
+  companySlug,
+  jobSlug,
+  title,
+  work_policy,
+  location,
+  department,
+  employment_type,
+  experience_level,
+  job_type,
+  salary_range,
+}: {
+  companySlug: string;
+  jobSlug: string;
+  title: string;
+  work_policy: string;
+  location: string;
+  department: string;
+  employment_type: string;
+  experience_level: string;
+  job_type: string;
+  salary_range: string;
+}) {
+  return await axios.patch(`/${companySlug}/job/${jobSlug}/edit`, {
+    title,
+    work_policy,
+    location,
+    department,
+    employment_type,
+    experience_level,
+    job_type,
+    salary_range,
+  });
 }

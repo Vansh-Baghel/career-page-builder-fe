@@ -18,7 +18,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-slate-50 text-slate-900">
         <QueryProvider>
           <Toaster
-            position="top-right"
+            position="bottom-right"
             expand
             duration={2000}
             closeButton

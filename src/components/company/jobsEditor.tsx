@@ -1,12 +1,10 @@
 "use client";
 
-import { useEditorStore } from "@/store/editor";
 import { Job } from "@/lib/types";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 export function JobsEditor({ sectionIndex }: { sectionIndex: number }) {
-  const { sections, setSections } = useEditorStore();
 
   const jobs: Job[] = sections[sectionIndex].jobs ?? [];
 
