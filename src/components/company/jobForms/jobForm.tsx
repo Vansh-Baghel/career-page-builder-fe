@@ -20,7 +20,7 @@ type JobFormProps = {
     employment_type: string;
     experience_level: string;
     job_type: string;
-    salary_range: string;
+    salary: string;
   };
   update: (field: string, value: string) => void;
   isSubmitting: boolean;
@@ -96,7 +96,7 @@ export function JobForm({
           <SelectContent>
             <SelectItem value="full-time">Full-time</SelectItem>
             <SelectItem value="part-time">Part-time</SelectItem>
-            <SelectItem value="internship">Internship</SelectItem>
+            <SelectItem value="contract">Contract</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -131,7 +131,8 @@ export function JobForm({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="permanent">Permanent</SelectItem>
-            <SelectItem value="contract">Contract</SelectItem>
+            <SelectItem value="temporary">Temporary</SelectItem>
+            <SelectItem value="internship">Internship</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -140,8 +141,8 @@ export function JobForm({
       <div className="grid gap-1">
         <Label>Salary Range (Yearly)</Label>
         <Input
-          value={form.salary_range}
-          onChange={(e) => update("salary_range", e.target.value)}
+          value={form.salary}
+          onChange={(e) => update("salary", e.target.value)}
         />
       </div>
 

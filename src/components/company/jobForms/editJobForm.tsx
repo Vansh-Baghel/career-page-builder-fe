@@ -24,7 +24,7 @@ export function EditJobForm() {
     employment_type: "",
     experience_level: "",
     job_type: "",
-    salary_range: "",
+    salary: "",
   });
 
   const update = (f: string, v: string) => setForm((p) => ({ ...p, [f]: v }));

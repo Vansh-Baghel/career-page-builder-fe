@@ -70,10 +70,6 @@ export async function getPreview(slug: string) {
   return await axios.get(`/company/${slug}/preview`);
 }
 
-export async function getPublicCompany(slug: string) {
-  return await axios.get(`/company/public/${slug}/careers`);
-}
-
 export async function uploadLogoOrBanner(
   companySlug: string,
   field: string,
@@ -103,8 +99,12 @@ export async function getSingleJob({
   return await axios.get(`/${companySlug}/job/${jobSlug}`);
 }
 
-export async function getJobs(companySlug: string) {
-  return await axios.get(`/${companySlug}/jobs`);
+export async function getPublishedCompanyData(companySlug: string) {
+  return await axios.get(`/company/${companySlug}/published`);
+}
+
+export async function getJobs(companySlug: string, page: number, limit: number) {
+  return await axios.get(`/${companySlug}/jobs?page=${page}&limit=${limit}`);
 }
 
 export async function createJob({
@@ -115,7 +115,7 @@ export async function createJob({
   employment_type,
   experience_level,
   job_type,
-  salary_range,
+  salary,
   slug,
 }: {
   title: string;
@@ -125,7 +125,7 @@ export async function createJob({
   employment_type: string;
   experience_level: string;
   job_type: string;
-  salary_range: string;
+  salary: string;
   slug: string;
 }) {
   return await axios.post(`/${slug}/job`, {
@@ -136,7 +136,7 @@ export async function createJob({
     employment_type,
     experience_level,
     job_type,
-    salary_range,
+    salary,
   });
 }
 
@@ -160,7 +160,7 @@ export async function editJob({
   employment_type,
   experience_level,
   job_type,
-  salary_range,
+  salary,
 }: {
   companySlug: string;
   jobSlug: string;
@@ -171,7 +171,7 @@ export async function editJob({
   employment_type: string;
   experience_level: string;
   job_type: string;
-  salary_range: string;
+  salary: string;
 }) {
   return await axios.patch(`/${companySlug}/job/${jobSlug}/edit`, {
     title,
@@ -181,7 +181,10 @@ export async function editJob({
     employment_type,
     experience_level,
     job_type,
-    salary_range,
+    salary,
   });
 }
 
+export const publishCompany = ({ companySlug }: { companySlug: string }) => {
+  return axios.post(`/publish/${companySlug}`);
+};

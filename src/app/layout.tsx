@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import "./globals.css";
-import QueryProvider from "../components/providers/query-provider";
 import { Toaster } from "sonner";
+import QueryProvider from "../components/providers/query-provider";
+import "./globals.css";
+import { Navbar } from "@/components/layout/navbar";
 
 export const metadata: Metadata = {
   title: "Careers Page Builder",
@@ -16,6 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen bg-slate-50 text-slate-900">
+        <Navbar />
         <QueryProvider>
           <Toaster
             position="bottom-right"

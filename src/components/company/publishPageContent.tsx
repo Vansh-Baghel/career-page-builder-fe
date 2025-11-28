@@ -1,7 +1,7 @@
 "use client";
 
-import { deleteJob, getJobs } from "@/lib/apis";
-import { Job, JobFiltersType } from "@/lib/types";
+import { deleteJob, getJobs, getPublishedCompanyData } from "@/lib/apis";
+import { AllJobs, Job, JobFiltersType } from "@/lib/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
@@ -11,10 +11,14 @@ import { JobCard } from "./jobCard";
 import { JobFilters } from "./jobFilters";
 import { PreviewView } from "./previewView";
 import { DeleteJobDialog } from "../modals/deleteJobModal";
+import Pagination from "./pagination";
 
 export default function PublishPageContent() {
   const { companySlug } = useParams<{ companySlug: string }>();
   const router = useRouter();
+  const [page, setPage] = useState(1);
+  const limit = 10;
+
   const [filters, setFilters] = useState<JobFiltersType>({});
   const [deleteModal, setDeleteModal] = useState({
     open: false,
@@ -24,15 +28,29 @@ export default function PublishPageContent() {
 
   const queryClient = useQueryClient();
 
-  const { data: jobsData, isLoading } = useQuery({
-    queryKey: ["jobs", companySlug],
-    queryFn: () => getJobs(companySlug).then((res) => res.data),
+  // ---------- FETCH COMPANY DATA ----------
+  const { data: publishedCompanyData, isLoading: loadingPublishedData } =
+    useQuery({
+      queryKey: [`publishedCompanyData-${companySlug}`, companySlug],
+      queryFn: () =>
+        getPublishedCompanyData(companySlug).then((res) => res.data),
+    });
+
+  // ---------- FETCH PAGINATED JOBS ----------
+  const {
+    data: jobsData,
+    isLoading,
+    isFetching,
+  } = useQuery({
+    queryKey: ["jobs", companySlug, page, limit],
+    queryFn: () => getJobs(companySlug, page, limit).then((res) => res.data),
   });
 
+  // ---------- FILTER JOBS LOCALLY ----------
   const filteredJobs = useMemo(() => {
-    if (!jobsData) return [];
+    if (!jobsData?.jobs) return [];
 
-    return jobsData.filter((job: Job) => {
+    return jobsData.jobs.filter((job: Job) => {
       if (
         filters.employment_type &&
         job.employment_type !== filters.employment_type
@@ -55,6 +73,7 @@ export default function PublishPageContent() {
     setFilters(filters);
   };
 
+  // ---------- DELETE JOB ----------
   const { mutate } = useMutation({
     mutationFn: deleteJob,
     onSuccess: () => {
@@ -83,19 +102,28 @@ export default function PublishPageContent() {
     <main className="space-y-6">
       <h1 className="text-2xl font-semibold">Publish</h1>
 
-      <PreviewView companySlug={companySlug} />
+      <PreviewView
+        company={publishedCompanyData}
+        isLoading={loadingPublishedData}
+      />
+
+      <div className="flex justify-end">
+        <Button onClick={() => router.push(`/${companySlug}/publish/add-job`)}>
+          Add Job
+        </Button>
+      </div>
 
       <JobFilters onFilter={handleFilter} />
 
-      {isLoading ? (
+      {(isLoading || isFetching) ? (
         <p>Loading jobs...</p>
       ) : filteredJobs.length === 0 ? (
         <p>No jobs found.</p>
       ) : (
         <div className="space-y-4">
-          {filteredJobs.map((job: Job, idx: number) => (
+          {filteredJobs.map((job: Job) => (
             <JobCard
-              key={idx}
+              key={job.id}
               job={job}
               onDelete={() => handleDeleteOnClickHandler(job.job_slug)}
               onEdit={() =>
@@ -106,11 +134,19 @@ export default function PublishPageContent() {
         </div>
       )}
 
-      <div className="flex justify-end">
-        <Button onClick={() => router.push(`/${companySlug}/publish/add-job`)}>
-          Add Job
-        </Button>
-      </div>
+      {jobsData && (
+        <div className="pt-4">
+          <p className="text-sm text-gray-500">
+            Showing {filteredJobs.length} of {jobsData.totalJobs} jobs
+          </p>
+
+          <Pagination
+            currentPage={jobsData.pagination.currentPage}
+            totalPages={jobsData.pagination.totalPages}
+            onPageChange={(newPage) => setPage(newPage)}
+          />
+        </div>
+      )}
 
       <DeleteJobDialog
         open={deleteModal.open}

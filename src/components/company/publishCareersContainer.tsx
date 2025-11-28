@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import { CareersJobsList } from "@/components/company/careersJobsList";
-import { getPublicCompany } from "@/lib/apis";
+import { getPublishedCompanyData } from "@/lib/apis";
 import { PublishCareersSections } from "./publishCareersSections";
 
 export default function PublishCareersContainer() {
@@ -12,7 +12,7 @@ export default function PublishCareersContainer() {
 
   const fetchPublicCompany = async () => {
     try {
-      const response = await getPublicCompany(companySlug);
+      const response = await getPublishedCompanyData(companySlug);
       return response.data;
     } catch (err) {
       console.error(err);
@@ -21,7 +21,7 @@ export default function PublishCareersContainer() {
   };
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["public-company", companySlug],
+    queryKey: ["published-company-data", companySlug],
     queryFn: fetchPublicCompany,
   });
 
@@ -41,7 +41,7 @@ export default function PublishCareersContainer() {
     );
   }
 
-  const { name, logo_url, banner_url, culture_video_url, sections, jobs } = data;
+  const { name, logo_url, banner_url, culture_video_url, sections } = data;
 
   return (
     <main className="space-y-10 py-10">
@@ -80,7 +80,7 @@ export default function PublishCareersContainer() {
       {sections && sections.length > 0 && <PublishCareersSections sections={sections} />}
 
       {/* Jobs */}
-      <CareersJobsList jobs={jobs} />
+      <CareersJobsList companySlug={companySlug} />
 
       {/* Culture video */}
       {culture_video_url && (

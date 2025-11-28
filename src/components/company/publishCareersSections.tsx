@@ -35,16 +35,6 @@ export function PublishCareersSections({ sections }: { sections: CompanySection[
               </div>
             );
 
-          case "jobs":
-            return (
-              <div key={idx} className="space-y-2">
-                <h2 className="text-lg font-semibold">{s.heading || "Jobs"}</h2>
-                <p className="text-sm text-slate-700 whitespace-pre-wrap">
-                  {s.description}
-                </p>
-              </div>
-            );
-
           default:
             return null;
         }

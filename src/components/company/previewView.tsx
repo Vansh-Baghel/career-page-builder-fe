@@ -1,18 +1,10 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CompanySection } from "@/lib/types";
+import { CompanyPublic, CompanySection } from "@/lib/types";
 import Image from "next/image";
 
-import { getPreview } from "@/lib/apis";
-import { useQuery } from "@tanstack/react-query";
-
-export function PreviewView({ companySlug }: { companySlug: string }) {
-  const { data: company, isLoading } = useQuery({
-    queryKey: [`get-${companySlug}-company-draft`, companySlug],
-    queryFn: () => getPreview(companySlug).then((r) => r.data),
-  });
-
+export function PreviewView({ company, isLoading }: { company: CompanyPublic, isLoading: boolean }) {
   if (isLoading) return <p>Loading…</p>;
   const renderSection = (s: CompanySection, idx: number) => (
     <Card key={idx}>
@@ -35,7 +27,7 @@ export function PreviewView({ companySlug }: { companySlug: string }) {
           <div className="relative h-40 w-full">
             <Image
               src={company.banner_url}
-              alt={`${company.company_name} banner`}
+              alt={`${company.name} banner`}
               fill
               className="object-cover"
             />
@@ -45,16 +37,16 @@ export function PreviewView({ companySlug }: { companySlug: string }) {
           {company.logo_url && (
             <Image
               src={company.logo_url}
-              alt={company.company_name}
+              alt={company.name}
               width={56}
               height={56}
               className="h-14 w-14 rounded-md object-cover border"
             />
           )}
           <div>
-            <h1 className="text-xl font-semibold">{company.company_name}</h1>
+            <h1 className="text-xl font-semibold">{company.name}</h1>
             <p className="text-sm text-muted-foreground">
-              Careers at {company.company_name}
+              Careers at {company.name}
             </p>
           </div>
         </div>
@@ -73,7 +65,7 @@ export function PreviewView({ companySlug }: { companySlug: string }) {
             <iframe
               src={company.culture_video_url}
               className="w-full h-full"
-              title={`${company.company_name} culture video`}
+              title={`${company.name} culture video`}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />

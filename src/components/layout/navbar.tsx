@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { logout } from "@/lib/auth";
+import { getCurrentUser, logout } from "@/lib/auth";
 
 export function Navbar() {
   const router = useRouter();
@@ -12,10 +12,10 @@ export function Navbar() {
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    const u = localStorage.getItem("user");
-    if (!u) return;
-    setUser(JSON.parse(u));
+    getCurrentUser();
   }, []);
+
+  console.log("🚀 ~ Navbar ~ user:", user);
 
   const handleLogout = () => {
     logout(); // clear cookie/localStorage

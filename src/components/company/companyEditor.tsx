@@ -52,7 +52,7 @@ export default function CompanyEditor() {
         banner_public_id: preview.banner_public_id || "",
         culture_video_public_id: preview.culture_video_public_id || "",
       });
-      setCompanyName(preview.company_name || "");
+      setCompanyName(preview.name || "");
     });
   }, [preview]);
 

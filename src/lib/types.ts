@@ -26,9 +26,23 @@ export type Job = {
   employment_type: EmploymentType;
   experience_level: ExperienceLevel;
   job_type: JobType;
-  salary_range: string;
+  salary: string;
   job_slug: string;
-  posted_days_ago?: number;
+  posted_days_ago?: string;
+};
+
+export type AllJobs = {
+  jobs: Job[];
+  totalJobs: number;
+  pagination: Pagination;
+};
+
+export type Pagination = {
+  totalPages: number;
+  currentPage: number;
+  pageSize: number;
+  nextPage: number;
+  prevPage: number;
 };
 
 export type CompanyPublic = {
@@ -54,24 +68,20 @@ export type Brand = {
   culture_video_public_id?: string;
 };
 
-export type EmploymentType =
-  | "full_time"
-  | "part_time"
-  | "contract"
-  | "internship";
+export type EmploymentType = "full_time" | "part_time" | "contract";
 
-export type ExperienceLevel = "fresher" | "junior" | "mid" | "senior" | "lead";
+export type ExperienceLevel = "junior" | "mid" | "senior";
 
 export type WorkPolicy = "remote" | "hybrid" | "onsite";
 
-export type JobType = "permanent`" | "contract";
+export type JobType = "permanent" | "temporary" | "internship";
 
 export type JobFiltersType = {
   employment_type?: EmploymentType;
   experience_level?: ExperienceLevel;
   work_policy?: WorkPolicy;
   job_type?: JobType;
-}
+};
 
 export type CompanyCareerType = {
   id: string;

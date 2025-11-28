@@ -51,7 +51,6 @@ export function SignupForm() {
 
   const onSubmit = async (data: SignupFormValues) => {
     mutate(data);
-    
   };
 
   return (

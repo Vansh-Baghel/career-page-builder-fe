@@ -31,7 +31,7 @@ export function JobsEditor({ sectionIndex }: { sectionIndex: number }) {
         employment_type: "full-time",
         experience_level: "junior",
         job_type: "permanent",
-        salary_range: "",
+        salary: "",
       },
     ]);
   };
@@ -50,8 +50,8 @@ export function JobsEditor({ sectionIndex }: { sectionIndex: number }) {
           <Input placeholder="Location" value={job.location}
             onChange={(e) => updateJob(i, { location: e.target.value })}
           />
-          <Input placeholder="Salary Range" value={job.salary_range}
-            onChange={(e) => updateJob(i, { salary_range: e.target.value })}
+          <Input placeholder="Salary Range" value={job.salary}
+            onChange={(e) => updateJob(i, { salary: e.target.value })}
           />
           <Button variant="destructive" size="sm" onClick={() => removeJob(i)}>
             Remove Job

@@ -1,5 +1,5 @@
-import Home from "@/components/home";
+import { redirect } from "next/navigation";
 
-export default async function HomePage() {
-  return <Home />;
+export default function Home() {
+  redirect("/careers");
 }

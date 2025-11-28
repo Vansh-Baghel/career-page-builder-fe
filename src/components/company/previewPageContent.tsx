@@ -3,10 +3,33 @@
 import { PreviewView } from "@/components/company/previewView";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "../ui/button";
+import { deleteJob, getPreview, publishCompany } from "@/lib/apis";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export default function PreviewPageContent() {
   const { companySlug } = useParams<{ companySlug: string }>();
   const router = useRouter();
+
+  const { data: company, isLoading } = useQuery({
+    queryKey: [`get-${companySlug}-company-draft`, companySlug],
+    queryFn: () => getPreview(companySlug).then((r) => r.data),
+  });
+
+  const { mutate } = useMutation({
+    mutationFn: publishCompany,
+    onSuccess: () => {
+      toast.success("Company published");
+    },
+    onError: () => {
+      toast.error("Failed to publish the company");
+    },
+  });
+
+  const publishOnClickHandler = () => {
+    mutate({ companySlug });
+    router.push(`/${companySlug}/publish`);
+  };
 
   return (
     <main className="space-y-4">
@@ -24,14 +47,14 @@ export default function PreviewPageContent() {
           <Button
             className="text-sm"
             variant="default"
-            onClick={() => router.push(`/${companySlug}/publish`)}
+            onClick={publishOnClickHandler}
           >
             Publish
           </Button>
         </div>
       </div>
 
-      <PreviewView companySlug={companySlug} />
+      <PreviewView company={company} isLoading={isLoading} />
     </main>
   );
 }
