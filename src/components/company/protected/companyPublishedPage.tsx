@@ -41,7 +41,6 @@ export default function CompanyPublishedPage() {
   }
 
   const { sections } = data;
-  console.log("🚀 ~ CompanyPublishedPage ~ data:", data)
 
   return (
     <main className="space-y-10 py-10">
