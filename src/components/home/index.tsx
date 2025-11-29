@@ -20,33 +20,43 @@ export default function Home() {
     <main className="p-6 space-y-6">
       <h1 className="text-2xl font-semibold">Companies Hiring</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {companies.map((company: CompanyCareerType) => (
-          <Link
-            key={company.id}
-            href={`/careers/${company.slug}`}
-            className="border rounded-lg p-4 hover:bg-gray-50"
-          >
-            <div className="flex items-center gap-4">
-              {company.published_logo_url && (
-                <Image
-                  src={company.published_logo_url}
-                  alt={company.name}
-                  width={48}
-                  height={48}
-                  className="w-12 h-12 rounded-md object-cover"
-                />
-              )}
-              <div>
-                <h2 className="font-semibold">{company.name}</h2>
-                <p className="text-sm text-muted-foreground">
-                  {company.jobs_count} open positions
-                </p>
+      {companies.length === 0 ? (
+        <div className="border border-dashed rounded-lg p-12 text-center text-muted-foreground">
+          <p className="text-lg font-medium mb-1">No companies found</p>
+          <p className="text-sm">
+            There are currently no published career pages available.
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {companies.map((company: CompanyCareerType) => (
+            <Link
+              key={company.id}
+              href={`/careers/${company.slug}`}
+              className="border rounded-lg p-4 hover:bg-gray-50 transition-colors"
+            >
+              <div className="flex items-center gap-4">
+                {company.published_logo_url && (
+                  <Image
+                    src={company.published_logo_url}
+                    alt={company.name}
+                    width={48}
+                    height={48}
+                    className="w-12 h-12 rounded-md object-cover"
+                  />
+                )}
+
+                <div>
+                  <h2 className="font-semibold">{company.name}</h2>
+                  <p className="text-sm text-muted-foreground">
+                    {company.jobs_count} open positions
+                  </p>
+                </div>
               </div>
-            </div>
-          </Link>
-        ))}
-      </div>
+            </Link>
+          ))}
+        </div>
+      )}
     </main>
   );
 }
